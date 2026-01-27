@@ -87,10 +87,4 @@ ratings = Table("ratings",meta,
                 )
 Index("ix_itemId_rating", ratings.c.item_id, ratings.c.rating)
 
-offers = Table("offers",meta,
-                Column("listing_id", Integer, ForeignKey("listings.listing_id")),
-                Column("amount", Integer, nullable=False), # 100-free 0-no discount 30-30% discount
-                )
-Index("ix_offer_listingId_amount", offers.c.listing_id, offers.c.amount)
-
 #meta.create_all(engine)
