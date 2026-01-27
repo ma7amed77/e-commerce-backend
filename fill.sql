@@ -1,0 +1,221 @@
+-- Insert categories
+INSERT INTO categories (category_id, name) VALUES 
+(1, 'Electronics'),
+(2, 'Books'),
+(3, 'Clothing'),
+(4, 'Home & Kitchen'),
+(5, 'Sports & Outdoors');
+
+-- Insert users
+INSERT INTO users (user_id, name, email, password) VALUES 
+(1, 'Alice Johnson', 'alice@example.com', 'hashed_password_1'),
+(2, 'Bob Smith', 'bob@example.com', 'hashed_password_2'),
+(3, 'Charlie Brown', 'charlie@example.com', 'hashed_password_3'),
+(4, 'Diana Prince', 'diana@example.com', 'hashed_password_4'),
+(5, 'Edward Wilson', 'edward@example.com', 'hashed_password_5');
+
+-- Insert sellers (users 1-3 are also sellers)
+INSERT INTO sellers (seller_id, user_id, seller_name) VALUES 
+(1, 1, 'Alice''s Electronics'),
+(2, 2, 'Bob''s Bookstore'),
+(3, 3, 'Charlie''s Outfitters');
+
+-- Insert items (30 items across 5 categories)
+INSERT INTO items (item_id, name, description, category_id, lister_id) VALUES 
+-- Electronics (6 items)
+(1, 'Smartphone X', 'Latest smartphone with 128GB storage', 1,5),
+(2, 'Wireless Earbuds', 'Noise-cancelling wireless earbuds', 1,2),
+(3, 'Laptop Pro', '15-inch laptop with 16GB RAM', 1,1),
+(4, 'Smart Watch', 'Fitness tracking smartwatch', 1,4),
+(5, 'Bluetooth Speaker', 'Portable waterproof speaker', 1,1),
+(6, 'Tablet Mini', '8-inch tablet with stylus', 1,4),
+
+-- Books (6 items)
+(7, 'The Great Adventure', 'Bestselling fiction novel', 2,2),
+(8, 'Data Science Basics', 'Introduction to data science', 2,1),
+(9, 'Cookbook Delights', 'Collection of 100 recipes', 2,3),
+(10, 'History of Rome', 'Historical account of ancient Rome', 2,2),
+(11, 'Python Programming', 'Learn Python in 30 days', 2,5),
+(12, 'Mindfulness Guide', 'Guide to meditation and mindfulness', 2,5),
+
+-- Clothing (6 items)
+(13, 'T-Shirt Classic', '100% cotton crew neck t-shirt', 3,1),
+(14, 'Jeans Slim Fit', 'Denim jeans with modern fit', 3,4),
+(15, 'Winter Jacket', 'Waterproof winter jacket', 3,1),
+(16, 'Running Shoes', 'Lightweight running shoes', 3,2),
+(17, 'Formal Shirt', 'Business formal cotton shirt', 3,1),
+(18, 'Summer Dress', 'Floral print summer dress', 3,3),
+
+-- Home & Kitchen (6 items)
+(19, 'Coffee Maker', 'Programmable coffee machine', 4,3),
+(20, 'Chef''s Knife', '8-inch professional chef knife', 4,4),
+(21, 'Blender Pro', 'High-speed kitchen blender', 4,5),
+(22, 'Air Fryer', 'Digital air fryer with touch controls', 4,3),
+(23, 'Bedding Set', 'Queen size cotton bedding set', 4,2),
+(24, 'Cookware Set', '10-piece non-stick cookware set', 4,3),
+
+-- Sports & Outdoors (6 items)
+(25, 'Yoga Mat', 'Non-slip exercise yoga mat', 5,3),
+(26, 'Tennis Racket', 'Professional tennis racket', 5,4),
+(27, 'Camping Tent', '4-person waterproof tent', 5,3),
+(28, 'Bicycle Helmet', 'Safety certified bike helmet', 5,3),
+(29, 'Dumbbell Set', 'Adjustable weight dumbbells', 5,2),
+(30, 'Running Shorts', 'Moisture-wicking athletic shorts', 5,5);
+
+-- Insert listings (50+ listings)
+INSERT INTO listings (listing_id, seller_id, item_id, price, state, amount) VALUES 
+-- Smartphone X listings (3 listings)
+(1, 1, 1, 79999, 1, 10),
+(2, 1, 1, 81999, 1, 5),
+(3, 1, 1, 75999, 0, 0),  -- Unlisted
+
+-- Wireless Earbuds (2 listings)
+(4, 1, 2, 12999, 1, 25),
+(5, 1, 2, 11999, 1, 15),
+
+-- Laptop Pro (2 listings)
+(6, 1, 3, 129999, 1, 8),
+(7, 1, 3, 124999, 1, 3),
+
+-- Smart Watch (2 listings)
+(8, 1, 4, 29999, 1, 20),
+(9, 1, 4, 27999, 1, 12),
+
+-- Bluetooth Speaker (2 listings)
+(10, 1, 5, 8999, 1, 30),
+(11, 1, 5, 8499, 1, 18),
+
+-- Tablet Mini (2 listings)
+(12, 1, 6, 34999, 1, 15),
+(13, 1, 6, 32999, 1, 7),
+
+-- Books listings by Bob's Bookstore
+(14, 2, 7, 1999, 1, 50),
+(15, 2, 8, 3499, 1, 30),
+(16, 2, 9, 2499, 1, 40),
+(17, 2, 10, 2999, 1, 25),
+(18, 2, 11, 3999, 1, 35),
+(19, 2, 12, 1799, 1, 45),
+
+-- Additional book listings
+(20, 2, 7, 1899, 1, 20),
+(21, 2, 8, 3299, 1, 15),
+
+-- Clothing listings by Charlie's Outfitters
+(22, 3, 13, 2499, 1, 100),
+(23, 3, 14, 5999, 1, 50),
+(24, 3, 15, 12999, 1, 30),
+(25, 3, 16, 8999, 1, 40),
+(26, 3, 17, 3499, 1, 60),
+(27, 3, 18, 4999, 1, 45),
+
+-- Additional clothing listings
+(28, 3, 13, 2299, 1, 80),
+(29, 3, 14, 5799, 1, 25),
+
+-- Home & Kitchen items by Alice's Electronics
+(30, 1, 19, 8999, 1, 20),
+(31, 1, 20, 4999, 1, 35),
+(32, 1, 21, 12999, 1, 15),
+(33, 1, 22, 10999, 1, 18),
+(34, 1, 23, 7999, 1, 25),
+(35, 1, 24, 14999, 1, 12),
+
+-- Sports items by Charlie's Outfitters
+(36, 3, 25, 2999, 1, 40),
+(37, 3, 26, 8999, 1, 20),
+(38, 3, 27, 19999, 1, 10),
+(39, 3, 28, 3999, 1, 35),
+(40, 3, 29, 14999, 1, 15),
+(41, 3, 30, 1999, 1, 60),
+
+-- Mixed listings from all sellers
+(42, 1, 7, 2099, 1, 20),  -- Alice sells books too
+(43, 2, 1, 82999, 1, 3),  -- Bob sells electronics
+(44, 3, 19, 9299, 1, 8),  -- Charlie sells home goods
+(45, 1, 13, 2699, 1, 40), -- Alice sells clothing
+(46, 2, 25, 3199, 1, 25), -- Bob sells sports
+(47, 3, 11, 3999, 1, 10), -- Charlie sells books
+(48, 1, 28, 4199, 1, 18), -- Alice sells sports
+(49, 2, 17, 3799, 1, 22), -- Bob sells clothing
+(50, 3, 5, 8799, 1, 14);  -- Charlie sells electronics
+
+-- Insert addresses for users
+INSERT INTO addresses (address_id, user_id, location) VALUES 
+(1, 1, '123 Main St, New York, NY 10001'),
+(2, 1, '456 Park Ave, New York, NY 10022'),
+(3, 2, '789 Broadway, Brooklyn, NY 11201'),
+(4, 3, '321 Elm St, Queens, NY 11355'),
+(5, 4, '654 Pine St, Manhattan, NY 10016'),
+(6, 5, '987 Oak St, Bronx, NY 10458');
+
+-- Insert orders (one per user)
+INSERT INTO orders (order_id, user_id, location, state, payment) VALUES 
+(1, 1, '123 Main St, New York, NY 10001', 3, 'credit_card'),  -- Delivered
+(2, 2, '789 Broadway, Brooklyn, NY 11201', 2, 'paypal'),      -- In transit
+(3, 3, '321 Elm St, Queens, NY 11355', 1, 'credit_card'),     -- Initiated
+(4, 4, '654 Pine St, Manhattan, NY 10016', 3, 'apple_pay'),   -- Delivered
+(5, 5, '987 Oak St, Bronx, NY 10458', 0, 'credit_card');      -- Canceled
+
+-- Insert order items (1-3 items per order)
+INSERT INTO order_item (order_id, listing_id, amount) VALUES 
+-- Order 1 (Alice): 3 items
+(1, 4, 1),   -- Wireless Earbuds
+(1, 14, 2),  -- The Great Adventure (2 copies)
+(1, 22, 1),  -- T-Shirt Classic
+
+-- Order 2 (Bob): 2 items
+(2, 6, 1),   -- Laptop Pro
+(2, 30, 1),  -- Coffee Maker
+
+-- Order 3 (Charlie): 1 item
+(3, 36, 2),  -- Yoga Mat (2 units)
+
+-- Order 4 (Diana): 2 items
+(4, 8, 1),   -- Smart Watch
+(4, 16, 1),  -- Cookbook Delights
+
+-- Order 5 (Edward): 2 items (canceled order)
+(5, 12, 1),  -- Tablet Mini
+(5, 27, 1);  -- Camping Tent
+
+-- Insert cart items (1-2 items per user)
+INSERT INTO carts (listing_id, user_id, amount) VALUES 
+-- Alice has 2 items in cart
+(10, 1, 1),  -- Bluetooth Speaker
+(28, 1, 2),  -- T-Shirt Classic (different listing)
+
+-- Bob has 1 item in cart
+(37, 2, 1),  -- Tennis Racket
+
+-- Charlie has 2 items in cart
+(19, 3, 1),  -- Mindfulness Guide
+(41, 3, 1),  -- Running Shorts
+
+-- Diana has 1 item in cart
+(34, 4, 1),  -- Bedding Set
+
+-- Edward has 2 items in cart
+(43, 5, 1),  -- Smartphone X (from Bob)
+(46, 5, 2);  -- Yoga Mat (from Bob, 2 units)
+
+-- Insert ratings (some users rated some items)
+INSERT INTO rating (rating, user_id, item_id, review) VALUES 
+(5, 1, 4, 'Excellent smartwatch, battery lasts for days!'),
+(4, 1, 2, 'Good sound quality, comfortable fit'),
+(3, 2, 7, 'Enjoyable read but predictable plot'),
+(5, 3, 25, 'Perfect for my daily yoga practice'),
+(2, 4, 19, 'Coffee maker broke after 2 weeks'),
+(4, 5, 27, 'Good tent for the price, easy to set up'),
+(5, 2, 3, 'Fast laptop for programming'),
+(4, 3, 13, 'Comfortable t-shirt, true to size');
+
+-- Insert offers (discounts on some listings)
+INSERT INTO offers (listing_id, amount) VALUES 
+(10, 15),   -- 15% off Bluetooth Speaker
+(14, 25),   -- 25% off The Great Adventure
+(22, 10),   -- 10% off T-Shirt Classic
+(30, 30),   -- 30% off Coffee Maker
+(36, 20),   -- 20% off Yoga Mat
+(42, 100),  -- Free book (100% off)
+(48, 15);   -- 15% off Bicycle Helmet
