@@ -4,6 +4,4 @@ __pycache__/
 
 .vscode/
 
-database.db
-
 .env

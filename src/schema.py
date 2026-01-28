@@ -87,4 +87,4 @@ ratings = Table("ratings",meta,
                 )
 Index("ix_itemId_rating", ratings.c.item_id, ratings.c.rating)
 
-meta.create_all(engine)
+#meta.create_all(engine)
