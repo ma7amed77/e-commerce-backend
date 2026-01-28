@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, ForeignKey, CheckConstraint, Index
+from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, ForeignKey, CheckConstraint, Index, text
 from sqlalchemy.dialects.sqlite import insert as d_insert
 
 engine = create_engine("sqlite:///database.db", echo=True)
@@ -34,7 +34,8 @@ items = Table("items",meta,
               Column("name", String, nullable=False),
               Column("description", String, nullable=False),
               Column("category_id", Integer, ForeignKey("categories.category_id")),
-              Column("lister_id", Integer, ForeignKey("sellers.seller_id")) # this is for wanting to edit item
+              Column("lister_id", Integer, ForeignKey("sellers.seller_id")), # this is for wanting to edit item
+              Column("item_state", Integer, server_default=text("1"), nullable=False), # 1-available 0-unlisted
               )
 Index("ix_item_lister_id", items.c.lister_id)
 
@@ -43,7 +44,7 @@ listings = Table("listings",meta,
                  Column("seller_id", Integer, ForeignKey("sellers.seller_id")),
                  Column("item_id", Integer, ForeignKey("items.item_id")),
                  Column("price", Integer, nullable=False), # price in 0.01 of used unit
-                 Column("state", Integer, default=1), # 1-available 0-unlisted
+                 Column("state", Integer,server_default=text("1"), nullable = False), # 1-available 0-unlisted
                  Column("amount", Integer, nullable=False),
                  CheckConstraint('amount >= 0',name="amount_check")
                  )
@@ -87,4 +88,4 @@ ratings = Table("ratings",meta,
                 )
 Index("ix_itemId_rating", ratings.c.item_id, ratings.c.rating)
 
-#meta.create_all(engine)
+meta.create_all(engine)

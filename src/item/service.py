@@ -23,17 +23,35 @@ def editItem(item_id, lister_id, **kwargs):
         return result
 
 def deleteItem(item_id, lister_id):
-    statement = items.delete(
-                    ).where(and_(items.c.item_id==item_id, items.c.lister_id==lister_id)
-                    ).returning(items.c.item_id)
+    statement = items.update(
+                    ).where(
+                        and_(
+                            items.c.item_id==item_id,
+                              items.c.lister_id==lister_id
+                            )
+                    ).values(item_state = 0).returning(items.c.item_id)
+    
     with engine.begin() as conn:
-        result = conn.execute(statement).scalar_one_or_none()
-        return result
+        return conn.execute(statement).scalar_one_or_none()
     
 
 def checkCanReview(user_id, item_id):
-    return select(exists().where(and_(listings.c.item_id==item_id, orders.c.user_id==user_id))).select_from(order_item.join(orders, order_item.c.order_id == orders.c.order_id).join(listings, order_item.c.listing_id==listings.c.listing_id))
-
+    return select(
+        exists(
+            select(1)
+            .select_from(
+                order_item
+                .join(orders, order_item.c.order_id == orders.c.order_id)
+                .join(listings, order_item.c.listing_id == listings.c.listing_id)
+            )
+            .where(
+                and_(
+                    listings.c.item_id == item_id,
+                    orders.c.user_id == user_id,
+                )
+            )
+        )
+    )
 
 def fetchItem(item_id:int, user_id:int=0):
     can_review = 0

@@ -23,9 +23,8 @@ def editListing(seller_id, listing_id, **kwargs):
         return result
 
 def deleteListing(seller_id, listing_id):
-    statement = listings.delete(
+    statement = listings.update(
                     ).where(and_(listings.c.listing_id==listing_id, listings.c.seller_id==seller_id)
-                    ).returning(listings.c.listing_id)
+                    ).values(state = 0).returning(listings.c.listing_id)
     with engine.begin() as conn:
-        result = conn.execute(statement).scalar_one_or_none()
-        return result
+        return conn.execute(statement).scalar_one_or_none()

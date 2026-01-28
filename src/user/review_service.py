@@ -1,12 +1,27 @@
 from sqlalchemy import select, and_, exists
 
-from ..schema import engine,  ratings, d_insert, order_item, orders, CannotReview
+from ..schema import engine,  ratings, d_insert, order_item, orders, CannotReview, listings
 
 
 #---------------------- Items reviews ----------------------#
 
 def checkCanReview(user_id, item_id):
-    return select(exists().where(and_(order_item.c.item_id==item_id, orders.c.user_id==user_id))).select_from(order_item.join(orders, order_item.c.order_id == orders.c.order_id))
+    return select(
+        exists(
+            select(1)
+            .select_from(
+                order_item
+                .join(orders, order_item.c.order_id == orders.c.order_id)
+                .join(listings, order_item.c.listing_id == listings.c.listing_id)
+            )
+            .where(
+                and_(
+                    listings.c.item_id == item_id,
+                    orders.c.user_id == user_id,
+                )
+            )
+        )
+    )
 
 
 def addRating(user_id:int, item_id:int, rating:int, review:str = ""):

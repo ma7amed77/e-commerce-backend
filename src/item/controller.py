@@ -18,8 +18,8 @@ def getItem(item_id:int):
 @router.post("/", response_model=ItemID)
 def listItem(itemData:ItemData, auth: str = Header(None)):
     try:
-        seller_data = verifySeller(auth)
-        result = addItem(lister_id=seller_data['seller_id'], **itemData.model_dump())
+        seller = verifySeller(auth)
+        result = addItem(lister_id=seller, **itemData.model_dump())
         return ItemID(item_id = result)
     except IntegrityError:
         raise HTTPException(status_code = status.HTTP_409_CONFLICT, detail = "Category ID is not valid")
@@ -27,8 +27,8 @@ def listItem(itemData:ItemData, auth: str = Header(None)):
 @router.patch("/{item_id}", response_model=ItemID)
 def patchAnItem(itemData:ItemUpdateData, item_id:int, auth: str = Header(None)):
     try:
-        seller_data = verifySeller(auth)
-        result = editItem(item_id=item_id, lister_id=seller_data['seller_id'], **itemData.model_dump())
+        seller = verifySeller(auth)
+        result = editItem(item_id=item_id, lister_id=seller, **itemData.model_dump())
         if result:
             return ItemID(item_id = result)
         else: 
@@ -36,10 +36,10 @@ def patchAnItem(itemData:ItemUpdateData, item_id:int, auth: str = Header(None)):
     except EmptyUpdate as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     
-@router.delete("/{item_id}", response_model=ItemID)
+@router.delete("/{item_id}")
 def deleteAnItem(item_id:int, auth: str = Header(None)):
-    seller_data = verifySeller(auth)
-    result = deleteItem(item_id = item_id, lister_id = seller_data['seller_id'])
+    seller = verifySeller(auth)
+    result = deleteItem(item_id = item_id, lister_id = seller)
     if result:
         return {"message":"Item has been deleted"}
     else: 

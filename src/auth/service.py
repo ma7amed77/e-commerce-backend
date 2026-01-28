@@ -1,12 +1,14 @@
 from fastapi import HTTPException
 from sqlalchemy import select
+from dotenv import load_dotenv
+
 
 import jwt
 import time
 import os
 
 from ..schema import users, engine
-
+load_dotenv()
 secret = os.getenv("SECRETKEY")
 alg = "HS256"
 

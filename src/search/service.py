@@ -17,7 +17,7 @@ def fillData(base):
                   func.count(listings.c.price).label("amount"),
                   func.coalesce(func.avg(ratings.c.rating), 0).label("rating"),
                   func.count(ratings.c.rating).label("ratings")
-                 ).select_from(
+                 ).where(base.c.item_state == 1).select_from(
                      base.outerjoin(listings,and_(listings.c.item_id == base.c.item_id, listings.c.state == 1)
                         ).outerjoin(ratings, ratings.c.item_id == base.c.item_id)).group_by(base.c.item_id)
 

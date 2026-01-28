@@ -13,7 +13,7 @@ review_router = APIRouter(prefix="/review",tags=['Review'])
 def addARating(ratingData:RatingData, item_id:int, auth: str = Header(None)):
     user_data = verifyJWT(auth)
     try:
-        addRating(user_id=user_data['sub'], **ratingData.model_dump())
+        addRating(item_id=item_id,user_id=user_data['sub'], **ratingData.model_dump())
         return {"message":"Review added"}
     except CannotReview:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"no item with id:{item_id} that user has bought")
