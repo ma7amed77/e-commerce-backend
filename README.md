@@ -28,8 +28,14 @@ It doesn't have content filtring so I can't leave it open on the internet 😄
 ### Items
 
 Items include name and general data about the item.
+* Multiple sellers can sell the same item
+* Items are created once, listings define price & stock
 
 ### Lists
+#### Listings represent:
+* Price
+* Stock
+* Seller
 
 Lists is like a price and stock for items. Each seller can add as many listings for same items so sellers selling known items can just add a listing for an exsiting item. Or a company can list thier items with specs and sellers just add a listing with thier price.
 
