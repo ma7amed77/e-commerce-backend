@@ -18,6 +18,7 @@ def checkCanReview(user_id, item_id):
                 and_(
                     listings.c.item_id == item_id,
                     orders.c.user_id == user_id,
+                    orders.c.state != 0
                 )
             )
         )

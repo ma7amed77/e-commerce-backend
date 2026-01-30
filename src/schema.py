@@ -10,6 +10,11 @@ class CannotReview(Exception):
 class EmptyUpdate(Exception):
     pass
 
+class CartEmpty(Exception):
+    pass
+class OutOfStock(Exception):
+    pass
+
 categories = Table("categories",meta,
                    Column("category_id",Integer,primary_key=True),
                    Column("name", String, nullable=False, unique=True)
