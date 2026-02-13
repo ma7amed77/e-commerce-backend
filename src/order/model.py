@@ -16,3 +16,7 @@ class OrderItemData(BaseModel):
     name:str
     description:str
     amount:int
+
+class OrderCompleted(BaseModel):
+    order_id:int
+    message:str

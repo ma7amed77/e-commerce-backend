@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
 
 from .api import register_routers
+from . import schema
 
 app = FastAPI()
 

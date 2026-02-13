@@ -2,28 +2,30 @@ from fastapi import APIRouter, HTTPException, Header
 from sqlalchemy.exc import IntegrityError
 from typing import List
 
-from ..schema import CartEmpty, OutOfStock
+from ..schema import CartEmpty, OutOfStock, get_conn
 from .service import fetchOrders, fetchOrderItems, createOrder
-from .model import CreateOrder, OrderData, OrderItemData
+from .model import CreateOrder, OrderData, OrderItemData, OrderCompleted
 from ..auth.service import verifyJWT
 
 router= APIRouter(prefix="/order",tags=['Order'])
 
 @router.get("/",response_model=List[OrderData])
-def getOrders(auth: str = Header(None)):
+def getOrders(conn:get_conn, auth: str = Header(None)):
     user = verifyJWT(auth)['sub']
-    return fetchOrders(user)
+    return fetchOrders(conn, user)
 
 @router.get("/{order_id}",response_model=List[OrderItemData])
-def getOrderItems(order_id:int, auth: str = Header(None)):
+def getOrderItems(conn:get_conn, order_id:int, auth: str = Header(None)):
     user = verifyJWT(auth)['sub']
-    return fetchOrderItems(order_id, user)
+    return fetchOrderItems(conn, order_id, user)
 
-@router.post("/{order_id}",response_model=List[OrderItemData])
-def createAnOrder(order_id:int, order_data:CreateOrder, auth: str = Header(None)):
+@router.post("/",response_model=OrderCompleted)
+def createAnOrder(conn:get_conn, order_data:CreateOrder, auth: str = Header(None)):
     user = verifyJWT(auth)['sub']
     try:
-        result = createOrder(user_id=user,
+        result = createOrder(
+                        conn,
+                        user_id=user,
                         location=order_data.location,
                         payment=order_data.payment,
                         payment_method=order_data.payment_method)

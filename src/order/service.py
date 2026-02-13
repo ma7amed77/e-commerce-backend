@@ -1,11 +1,9 @@
 from sqlalchemy import select, func, and_
 
-from ..schema import engine, carts, listings, CartEmpty, OutOfStock, orders, order_item, items
+from ..schema import carts, listings, CartEmpty, OutOfStock, orders, order_item, items
 
-def createOrder(user_id:int, location:str, payment:str, payment_method:str):
-    with engine.begin() as conn:
+def createOrder(conn, user_id:int, location:str, payment:str, payment_method:str):
         select_statement = select(
-                                carts.c.cart_id,
                                 carts.c.amount.label("quantity"),
                                 listings.c.listing_id,
                                 listings.c.price,
@@ -24,6 +22,11 @@ def createOrder(user_id:int, location:str, payment:str, payment_method:str):
         
         order_total = sum(row["total_price"] for row in rows)
 
+
+        # Should check and handle payment here
+
+
+        
         order_id = conn.execute(
             orders.insert()
             .values(user_id=user_id, state=1,payment = payment_method, location=location)
@@ -49,17 +52,16 @@ def createOrder(user_id:int, location:str, payment:str, payment_method:str):
         return order_id
 
 
-def fetchOrders(user_id):
+def fetchOrders(conn, user_id):
     statement = select(
                     orders.c.order_id,
                     orders.c.state,
                     orders.c.location,
                     orders.c.payment,
                     ).where(orders.c.user_id==user_id)
-    with engine.connect() as conn:
-        return conn.execute(statement).mappings().all()
+    return conn.execute(statement).mappings().all()
     
-def fetchOrderItems(order_id, user_id):
+def fetchOrderItems(conn, order_id, user_id):
     statement = select(
                         items.c.item_id,
                         items.c.name,
@@ -70,6 +72,4 @@ def fetchOrderItems(order_id, user_id):
                     ).join(items, listings.c.item_id==items.c.item_id
                     ).where(orders.c.user_id==user_id
                     ).where(orders.c.order_id == order_id)
-    
-    with engine.connect() as conn:
-        return conn.execute(statement).mappings().all()
+    return conn.execute(statement).mappings().all()

@@ -6,3 +6,7 @@ class LoginData(BaseModel):
 
 class RegisterData(LoginData):
     name: str = Field(min_length=3, description="user name", examples=["User Name"])
+
+class Token(BaseModel):
+    access_token:str
+    token_type: str =  Field(default="bearer")

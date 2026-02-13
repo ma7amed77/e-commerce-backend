@@ -1,6 +1,6 @@
-from sqlalchemy import select, func, and_, distinct, or_
+from sqlalchemy import select, func, and_, distinct, or_, true
 
-from ..schema import engine,  items, listings, ratings, categories
+from ..schema import  items, listings, ratings, categories
 
 #---------------------- Items Search & filter ----------------------#
 def searchItems(statement, search:str):
@@ -17,8 +17,8 @@ def fillData(base):
                   func.count(listings.c.price).label("amount"),
                   func.coalesce(func.avg(ratings.c.rating), 0).label("rating"),
                   func.count(ratings.c.rating).label("ratings")
-                 ).where(base.c.item_state == 1).select_from(
-                     base.outerjoin(listings,and_(listings.c.item_id == base.c.item_id, listings.c.state == 1)
+                 ).where(and_(base.c.item_state == 1,listings.c.state == 1)).select_from(
+                     base.join(listings,and_(listings.c.item_id == base.c.item_id, listings.c.state == 1)
                         ).outerjoin(ratings, ratings.c.item_id == base.c.item_id)).group_by(base.c.item_id)
 
 def getSearchCategories(statement):
@@ -37,9 +37,9 @@ def filterListings(statement, rating, category, price_min, price_max):
     
     if category is not None:
         conditions.append(sq.c.category_id==category)
-    return sq.select().where(and_(*conditions)).order_by(sq.c.item_id)
+    return sq.select().where(and_(true(), *conditions)).order_by(sq.c.item_id)
 
-def fetchList(page=0, limit=10,search = "", rating:int = 0, category=None, price_min:int = 0, price_max:int = 0):
+def fetchList(conn, page=0, limit=10,search = "", rating:int = 0, category=None, price_min:int = 0, price_max:int = 0):
     statement = None
     if search != "" :
         statement = fillData(searchItems(items.select(), search).subquery())
@@ -48,7 +48,7 @@ def fetchList(page=0, limit=10,search = "", rating:int = 0, category=None, price
     categories = getSearchCategories(statement)
     statement = filterListings(statement, rating, category, price_min, price_max)
     statement = statement.limit(limit).offset(page*limit)
-    with engine.connect() as conn:
-        categories_rows = conn.execute(categories).mappings().all()
-        items_rows = conn.execute(statement).mappings().all()
-        return {"items":items_rows, "categories":categories_rows}
+    
+    categories_rows = conn.execute(categories).mappings().all()
+    items_rows = conn.execute(statement).mappings().all()
+    return {"items":items_rows, "categories":categories_rows}

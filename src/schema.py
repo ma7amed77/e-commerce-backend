@@ -1,9 +1,21 @@
 from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, ForeignKey, CheckConstraint, Index, text
 from sqlalchemy.dialects.sqlite import insert as d_insert
+from sqlalchemy.engine import Connection
+from fastapi import Depends
 
-engine = create_engine("sqlite:///database.db", echo=True)
+from typing import Annotated
 
 meta = MetaData()
+
+def get_connection():
+    engine = create_engine("sqlite:///database.db")
+    meta.create_all(engine)
+    with engine.begin() as conn:
+        yield conn
+
+get_conn = Annotated[Connection, Depends(get_connection)]
+
+
 
 class CannotReview(Exception):
     pass
@@ -93,4 +105,4 @@ ratings = Table("ratings",meta,
                 )
 Index("ix_itemId_rating", ratings.c.item_id, ratings.c.rating)
 
-meta.create_all(engine)
+

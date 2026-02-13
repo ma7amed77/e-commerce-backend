@@ -7,26 +7,23 @@ import jwt
 import time
 import os
 
-from ..schema import users, engine
+from ..schema import users
 load_dotenv()
 secret = os.getenv("SECRETKEY")
 alg = "HS256"
-
-
+print(secret)
 # ------------ Users ------------- #
-def fetchUserLogin(email:str):
+def fetchUserLogin(conn, email:str):
     statement = select(users.c.name, users.c.user_id, users.c.password).where(users.c.email==email)
-    with engine.connect() as conn:
-        result = conn.execute(statement).fetchone()
-        if result: return result._mapping
+    result = conn.execute(statement).fetchone()
+    if result: return result._mapping
     return None
 
-def registerUser(**kwargs):
+def registerUser(conn, **kwargs):
     statement = users.insert().values(**kwargs)
-    with engine.begin() as conn:
-        result = conn.execute(statement)
-        if result.inserted_primary_key:
-            return result.inserted_primary_key[0]
+    result = conn.execute(statement)
+    if result.inserted_primary_key:
+        return result.inserted_primary_key[0]
 
 def createJWT(user_id:int, seller_id: int | None = None):
     payload={
@@ -40,15 +37,16 @@ def createJWT(user_id:int, seller_id: int | None = None):
 
 def verifyJWT(token:str):
     try:
-        payload = jwt.decode(token, secret, alg)
+        payload = jwt.decode(token, secret, algorithms=[alg])
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code = 401) 
     except jwt.InvalidTokenError:
         raise HTTPException(status_code = 401)
 
-def authLogin(email:str,password:str):
-    userData = fetchUserLogin(email)
+
+def authLogin(conn, email:str,password:str):
+    userData = fetchUserLogin(conn, email)
     if not userData:
         return None
     if userData.password != password:

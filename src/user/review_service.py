@@ -1,6 +1,6 @@
 from sqlalchemy import select, and_, exists
 
-from ..schema import engine,  ratings, d_insert, order_item, orders, CannotReview, listings
+from ..schema import  ratings, d_insert, order_item, orders, CannotReview, listings
 
 
 #---------------------- Items reviews ----------------------#
@@ -25,7 +25,7 @@ def checkCanReview(user_id, item_id):
     )
 
 
-def addRating(user_id:int, item_id:int, rating:int, review:str = ""):
+def addRating(conn, user_id:int, item_id:int, rating:int, review:str = ""):
     if rating < 1 or rating > 5 : raise ValueError("Not a valid Rating")
     indexes = {"user_id":user_id,
               "item_id":item_id}
@@ -39,7 +39,7 @@ def addRating(user_id:int, item_id:int, rating:int, review:str = ""):
                                 set_= values)
     check_can_review_statement = checkCanReview(user_id, item_id)
 
-    with engine.begin() as conn:
-        can_review = conn.execute(check_can_review_statement).scalar()
-        if not can_review: raise CannotReview("User has not purchased this item")
-        conn.execute(rating_statement)
+    
+    can_review = conn.execute(check_can_review_statement).scalar()
+    if not can_review: raise CannotReview("User has not purchased this item")
+    conn.execute(rating_statement)
