@@ -1,14 +1,14 @@
 # FastApi e-commerce
 
-This is a mini amazon like api built with FastApi and SQLalchemy core. The project is built as an application for complex quarries and quarry optmizations.
+This is a mini amazon like api built with FastApi and SQLalchemy core. The project is built as an application for complex quarries and quarry optimizations.
 
 ## Interactive api doc (readonly database)
 
 [Interactive api doc](https://e-commerce-backend-ma7amed77143-7mh2cnla.leapcell.dev/docs)
 
-(clone the project to test adding and ordring)
+(clone the project to test adding and ordering)
 
-It doesn't have content filtring so I can't leave it open on the internet 😄
+It doesn't have content filtering so I can't leave it open on the internet 😄
 
 ### Some Testing data
 
@@ -37,11 +37,11 @@ Items include name and general data about the item.
 * Stock
 * Seller
 
-Lists is like a price and stock for items. Each seller can add as many listings for same items so sellers selling known items can just add a listing for an exsiting item. Or a company can list thier items with specs and sellers just add a listing with thier price.
+Lists is like a price and stock for items. Each seller can add as many listings for same items so sellers selling known items can just add a listing for an existing item. Or a company can list their items with specs and sellers just add a listing with their price.
 
 ### Users & Sellers
 
-Usually it will requier manaual checking for legal papers to become a seller, but as this is for showcase users can just add a shop name will providing thier login jwt token to become a seller. (if api called again it will just update the name)
+Usually it will require manual checking for legal papers to become a seller, but as this is for showcase users can just add a shop name will providing their login jwt token to become a seller. (if api called again it will just update the name)
 
 ### Ratings & reviews
 
@@ -69,7 +69,7 @@ Items page and search collects data from Items and ratings and prices and seller
 
 ## Database
 
-The project started with SQLite for faster dev but for production a server based sql like PostgreSQL is a must, as SQLitesqlite doesn't have row locking so the whole database will be locked when ordring. also SQLitesqlite doesn't support async oprations.
+The project started with SQLite for faster dev but for production a server based sql like PostgreSQL is a must, as SQLite doesn't have row locking so the whole database will be locked when ordering. also SQLite doesn't support async operations.
 
 ## Authentication
 
