@@ -1,6 +1,13 @@
 # FastApi e-commerce
 
-This is a mini amazon like api built with FastApi and SQLalchemy core. The project is built as an application for complex quarries and quarry optimizations.
+This is a multi-seller marketplace REST API built with FastAPI and SQLAlchemy Core, featuring JWT auth, role-based access, cart management, order processing, and a purchase-verified review system.
+
+## How to run it locally
+
+git clone https://github.com/ma7amed77/e-commerce-backend
+cd e-commerce-backend
+pip install -r requirements.txt
+uvicorn main:app --reload
 
 ## Interactive api doc (readonly database)
 
@@ -12,14 +19,13 @@ It doesn't have content filtering so I can't leave it open on the internet 😄
 
 ### Some Testing data
 
-* alice@example.com
-* hashed_password_1
-*
-* bob@example.com
-* hashed_password_2
-*
-* charlie@example.com
-* hashed_password_3
+| Email               | Password          |
+|---------------------|-------------------|
+| alice@example.com   | hashed_password_1 |
+| bob@example.com     | hashed_password_2 |
+| charlie@example.com | hashed_password_3 |
+
+The project doesn't have password hashing as this is a showcase for the systems so DO NOT USE REAL DATA please 😄
 
 ## How is it structured
 
@@ -31,23 +37,22 @@ Items include name and general data about the item.
 * Multiple sellers can sell the same item
 * Items are created once, listings define price & stock
 
-### Lists
+### Listings
 #### Listings represent:
 * Price
 * Stock
 * Seller
 
-Lists is like a price and stock for items. Each seller can add as many listings for same items so sellers selling known items can just add a listing for an existing item. Or a company can list their items with specs and sellers just add a listing with their price.
+Listings define the price and stock for an item. Each seller can create their own listing for any existing item." and replace with just: "This allows multiple sellers to compete on the same product with independent pricing.
 
 ### Users & Sellers
 
-Usually it will require manual checking for legal papers to become a seller, but as this is for showcase users can just add a shop name will providing their login jwt token to become a seller. (if api called again it will just update the name)
+Usually it will require manual checking for legal papers to become a seller, but as this is for showcase users can just add a shop name while providing their JWT token to become a seller. (if api called again it will just update the name)
 
 ### Ratings & reviews
 
-Users can rate items can have an option to leave a review
-
-To leave a review user must have an order with this item
+Users can rate items and optionally leave a written review.
+To leave a review user must have an order with this item.
 
 ### Carts
 
@@ -56,16 +61,16 @@ Carts are connected to listings not items as user can choose which price/seller 
 User can:
 
 * Add item to cart (if item in cart it will add one).
-* Update a card with new amount.
+* Update a cart item's quantity.
 * Remove the listing.
 
 ### Locations
 
-locations are more of a save system so user doesn't have to rewrite the location in each order
+Locations are saved addresses so users don't have to re-enter delivery details on every order.
 
 ### Items Page & Search
 
-Items page and search collects data from Items and ratings and prices and seller name from Listings. There data is then used to filter and search
+Items page and search collects data from Items and ratings and prices and seller name from Listings. This data is then used to filter and search.
 
 ## Database
 
@@ -73,6 +78,4 @@ The project started with SQLite for faster dev but for production a server based
 
 ## Authentication
 
-I use jwt and store user_id and seller_id if it's a seller too
-
-The project doesn't have password hashing as this is a showcase for the systems so DO NOT USE REAL DATA please 😄
+Authentication uses JWT tokens storing user_id and seller_id (for sellers), enabling role-based access control across all protected endpoints.
