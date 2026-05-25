@@ -5,9 +5,12 @@ This is a multi-seller marketplace REST API built with FastAPI and SQLAlchemy Co
 ## How to run it locally
 
 git clone https://github.com/ma7amed77/e-commerce-backend
+
 cd e-commerce-backend
+
 pip install -r requirements.txt
-uvicorn main:app --reload
+
+fastapi dev src/main.py
 
 ## Interactive api doc (readonly database)
 
